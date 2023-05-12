@@ -7,7 +7,7 @@ import json
 # remove keys that only exist in translations
 
 cwd = os.getcwd()
-langdir = cwd + '/../src/strings'
+langdir = f'{cwd}/../src/strings'
 langlst = os.listdir(langdir)
 
 langlst.remove('en-us.json')
@@ -17,18 +17,16 @@ input('press enter to continue')
 keysus = []
 missing = []
 
-with open(langdir + '/' + 'en-us.json') as en:
+with open(f'{langdir}/en-us.json') as en:
     langus = json.load(en)
-    for key in langus:
-        keysus.append(key)
-
+    keysus.extend(iter(langus))
 for lang in langlst:
-    with open(langdir + '/' + lang, 'r') as f:
+    with open(f'{langdir}/{lang}', 'r') as f:
         inde = 2
         if '\n    \"' in f.read():
             inde = 4
         f.close()
-    with open(langdir + '/' + lang, 'r+') as f:
+    with open(f'{langdir}/{lang}', 'r+') as f:
         langjson = json.load(f)
         langjnew = {}
         for key in langjson:
@@ -43,7 +41,7 @@ for lang in langlst:
         f.close()
 
 print(missing)
-print('LENGTH: ' + str(len(missing)))
+print(f'LENGTH: {len(missing)}')
 with open('missing.txt', 'w') as out:
     for item in missing:
         out.write(item + '\n')
